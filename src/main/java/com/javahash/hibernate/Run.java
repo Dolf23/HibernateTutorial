@@ -27,22 +27,26 @@ public class Run {
         while (!command.equals("6")) {
             switch (command) {
                 case "1":{
-                    dao.add();
-                    System.out.println("User added.");
+                    System.out.print("Enter name:");
+                    String name = reader.readLine();
+                    dao.add(name);
+                    System.out.println("User added.\n");
                 }
                     break;
                 case "2":{
                     System.out.print(enterId);
                     int id = Integer.parseInt(reader.readLine().trim());
-                    dao.update(id);
-                    System.out.println("User updated..");
+                    System.out.print("Enter new name:");
+                    String name = reader.readLine();
+                    dao.update(id, name);
+                    System.out.println("User updated.\n");
                 }
                     break;
                 case "3":{
                     System.out.print(enterId);
                     int id = Integer.parseInt(reader.readLine().trim());
                     dao.delete(id);
-                    System.out.println("User deleted.");
+                    System.out.println("User deleted.\n");
                 }
                     break;
                 case "4":{
