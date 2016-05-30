@@ -1,11 +1,13 @@
 package com.javahash.hibernate;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.List;
 
 public class DAO {
     private Session session;
@@ -56,6 +58,18 @@ public class DAO {
         User user = (User) session.get(User.class, id);
         String userInformation = user.getUserId() + " " + user.getUsername() + " " + user.getCreatedBy() + " " + user.getCreatedDate() + ";";
         System.out.println(userInformation);
+        session.close();
+    }
+
+    public void showAll() throws IOException{
+        session = HibernateSessionManager.getSessionFactory().openSession();
+        session.beginTransaction();
+        Query query = session.createQuery("from User");
+        List<User> list = (List<User>) query.list();
+        for (User user:list){
+            String userInformation = user.getUserId() + " " + user.getUsername() + " " + user.getCreatedBy() + " " + user.getCreatedDate() + ";";
+            System.out.println(userInformation);
+        }
         session.close();
     }
 }
