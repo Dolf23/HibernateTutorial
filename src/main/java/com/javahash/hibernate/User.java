@@ -36,7 +36,9 @@ public class User implements Serializable{
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return userId + " " + username + " " + createdBy + " " + createdDate + ";";
+	}
 }

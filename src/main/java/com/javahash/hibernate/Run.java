@@ -3,12 +3,10 @@ package com.javahash.hibernate;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class Run {
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) throws IOException {
         String menu = "Please enter the following command:\n" +
                 "1. Add user.\n" +
@@ -22,42 +20,46 @@ public class Run {
         System.out.println(menu);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String command = reader.readLine().trim();
+        int id;
+        String name;
         DAO dao = new DAO();
 
         while (!command.equals("6")) {
             switch (command) {
-                case "1":{
+                case "1":
                     System.out.print("Enter name:");
-                    String name = reader.readLine();
+                    name = reader.readLine();
                     dao.add(name);
                     System.out.println("User added.\n");
-                }
                     break;
-                case "2":{
+
+                case "2":
                     System.out.print(enterId);
-                    int id = Integer.parseInt(reader.readLine().trim());
+                    id = Integer.parseInt(reader.readLine().trim());
                     System.out.print("Enter new name:");
-                    String name = reader.readLine();
+                    name = reader.readLine();
                     dao.update(id, name);
                     System.out.println("User updated.\n");
-                }
                     break;
-                case "3":{
+
+                case "3":
                     System.out.print(enterId);
-                    int id = Integer.parseInt(reader.readLine().trim());
+                    id = Integer.parseInt(reader.readLine().trim());
                     dao.delete(id);
                     System.out.println("User deleted.\n");
-                }
                     break;
-                case "4":{
-                    System.out.print(enterId);
-                    int id = Integer.parseInt(reader.readLine().trim());
-                    dao.show(id);
 
-                }
+                case "4":
+                    System.out.print(enterId);
+                    id = Integer.parseInt(reader.readLine().trim());
+                    System.out.println(dao.show(id));
+                    System.out.println();
                     break;
+
                 case "5":
-                    dao.showAll();
+                    List<User> list = dao.showAll();
+                    list.forEach(System.out::println);
+                    System.out.println();
                     break;
                 default: {
                     System.out.println("Incorrect command.");
