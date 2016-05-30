@@ -54,7 +54,6 @@ public class DAO {
 
     public void show(int id) throws IOException {
         session = HibernateSessionManager.getSessionFactory().openSession();
-        session.beginTransaction();
         User user = (User) session.get(User.class, id);
         String userInformation = user.getUserId() + " " + user.getUsername() + " " + user.getCreatedBy() + " " + user.getCreatedDate() + ";";
         System.out.println(userInformation);
@@ -63,13 +62,14 @@ public class DAO {
 
     public void showAll() throws IOException{
         session = HibernateSessionManager.getSessionFactory().openSession();
-        session.beginTransaction();
         Query query = session.createQuery("from User");
-        List<User> list = (List<User>) query.list();
+        List<User> list = query.list();
+        System.out.println();
         for (User user:list){
             String userInformation = user.getUserId() + " " + user.getUsername() + " " + user.getCreatedBy() + " " + user.getCreatedDate() + ";";
             System.out.println(userInformation);
         }
+        System.out.println();
         session.close();
     }
 }
