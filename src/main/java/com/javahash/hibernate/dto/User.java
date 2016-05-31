@@ -1,9 +1,8 @@
-package com.javahash.hibernate;
+package com.javahash.hibernate.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable{
+public class User extends Entity{
 
 	private int userId;
 	private String username;

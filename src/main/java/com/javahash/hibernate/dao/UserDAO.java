@@ -1,20 +1,21 @@
-package com.javahash.hibernate;
+package com.javahash.hibernate.dao;
 
+import com.javahash.hibernate.HibernateSessionManager;
+import com.javahash.hibernate.dto.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-public class DAO {
+public class UserDAO implements IDAO<User>{
     private Session session;
 
-    public void add(String name) throws IOException {
+
+    @Override
+    public void add(User user) {
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
-        User user = new User();
-        user.setUsername(name);
         user.setCreatedBy("Application");
         user.setCreatedDate(new Date());
 
@@ -23,7 +24,8 @@ public class DAO {
         session.close();
     }
 
-    public void delete(int id) throws IOException {
+    @Override
+    public void delete(int id) {
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         User user = (User) session.get(User.class, id);
@@ -33,18 +35,20 @@ public class DAO {
         session.close();
     }
 
-    public void update(int id, String name) throws IOException {
+    @Override
+    public void update(User user) {
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
-        User user = (User) session.get(User.class, id);
-        user.setUsername(name);
+        User userUpdate = (User) session.get(User.class, user.getUserId());
+        userUpdate.setUsername(user.getUsername());
 
-        session.saveOrUpdate(user);
+        session.saveOrUpdate(userUpdate);
         session.getTransaction().commit();
         session.close();
     }
 
-    public User show(int id) throws IOException {
+    @Override
+    public User show(int id) {
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         User user = (User) session.get(User.class, id);
@@ -54,7 +58,8 @@ public class DAO {
         return user;
     }
 
-    public List<User> showAll() throws IOException{
+    @Override
+    public List<User> showAll() {
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         Query query = session.createQuery("from User");

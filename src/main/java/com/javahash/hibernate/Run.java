@@ -1,5 +1,8 @@
 package com.javahash.hibernate;
 
+import com.javahash.hibernate.dao.UserDAO;
+import com.javahash.hibernate.dto.User;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,14 +25,17 @@ public class Run {
         String command = reader.readLine().trim();
         int id;
         String name;
-        DAO dao = new DAO();
+        User user;
+        UserDAO userDao = new UserDAO();
 
         while (!command.equals("6")) {
             switch (command) {
                 case "1":
                     System.out.print("Enter name:");
                     name = reader.readLine();
-                    dao.add(name);
+                    user = new User();
+                    user.setUsername(name);
+                    userDao.add(user);
                     System.out.println("User added.\n");
                     break;
 
@@ -38,26 +44,29 @@ public class Run {
                     id = Integer.parseInt(reader.readLine().trim());
                     System.out.print("Enter new name:");
                     name = reader.readLine();
-                    dao.update(id, name);
+                    user = new User();
+                    user.setUserId(id);
+                    user.setUsername(name);
+                    userDao.update(user);
                     System.out.println("User updated.\n");
                     break;
 
                 case "3":
                     System.out.print(enterId);
                     id = Integer.parseInt(reader.readLine().trim());
-                    dao.delete(id);
+                    userDao.delete(id);
                     System.out.println("User deleted.\n");
                     break;
 
                 case "4":
                     System.out.print(enterId);
                     id = Integer.parseInt(reader.readLine().trim());
-                    System.out.println(dao.show(id));
+                    System.out.println(userDao.show(id));
                     System.out.println();
                     break;
 
                 case "5":
-                    List<User> list = dao.showAll();
+                    List<User> list = userDao.showAll();
                     list.forEach(System.out::println);
                     System.out.println();
                     break;

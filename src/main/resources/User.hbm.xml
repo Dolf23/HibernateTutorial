@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
-    <class name="com.javahash.hibernate.User" table="USER">
+    <class name="com.javahash.hibernate.dto.User" table="USER">
         <id name="userId" type="int" column="USER_ID" >
             <generator class="assigned"/>
         </id>
