@@ -21,8 +21,10 @@ public class Run {
         String enterId = "Enter ID:";
         System.out.println("Hello.\n");
         System.out.println(menu);
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String command = reader.readLine().trim();
+
         int id;
         String name;
         User user;
@@ -79,7 +81,7 @@ public class Run {
         }
 
         System.out.println("Good Bye!");
-
+        HibernateSessionManager.shutdown();
     }
 
 }
