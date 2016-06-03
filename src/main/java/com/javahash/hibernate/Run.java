@@ -1,5 +1,6 @@
 package com.javahash.hibernate;
 
+import com.javahash.hibernate.Exceptions.UserExistsException;
 import com.javahash.hibernate.dao.UserDAO;
 import com.javahash.hibernate.dto.User;
 
@@ -11,6 +12,10 @@ import java.util.List;
 public class Run {
 
     public static void main(String[] args) throws IOException {
+        int id;
+        String name;
+        User user;
+        UserDAO userDao = new UserDAO();
         String menu = "Please enter the following command:\n" +
                 "1. Add user.\n" +
                 "2. Update user.\n" +
@@ -19,16 +24,12 @@ public class Run {
                 "5. Show all user.\n" +
                 "6. Exit.";
         String enterId = "Enter ID:";
+
         System.out.println("Hello.\n");
         System.out.println(menu);
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String command = reader.readLine().trim();
-
-        int id;
-        String name;
-        User user;
-        UserDAO userDao = new UserDAO();
 
         while (!command.equals("6")) {
             switch (command) {
@@ -49,22 +50,37 @@ public class Run {
                     user = new User();
                     user.setUserId(id);
                     user.setUsername(name);
-                    userDao.update(user);
-                    System.out.println("User updated.\n");
+                    try{
+                        userDao.update(user);
+                        System.out.println("User updated.\n");
+                    }
+                    catch (UserExistsException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case "3":
                     System.out.print(enterId);
                     id = Integer.parseInt(reader.readLine().trim());
-                    userDao.delete(id);
-                    System.out.println("User deleted.\n");
+                    try{
+                        userDao.delete(id);
+                        System.out.println("User deleted.\n");
+                    }
+                    catch (UserExistsException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case "4":
                     System.out.print(enterId);
                     id = Integer.parseInt(reader.readLine().trim());
-                    System.out.println(userDao.show(id));
-                    System.out.println();
+                    try {
+                        System.out.println(userDao.show(id));
+                        System.out.println();
+                    }
+                    catch (UserExistsException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case "5":

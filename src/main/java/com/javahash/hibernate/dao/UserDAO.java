@@ -1,6 +1,7 @@
 package com.javahash.hibernate.dao;
 
 import com.javahash.hibernate.HibernateSessionManager;
+import com.javahash.hibernate.Exceptions.UserExistsException;
 import com.javahash.hibernate.dto.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,6 +12,9 @@ import java.util.List;
 public class UserDAO implements IDAO<User>{
     private Session session;
 
+    public UserDAO(){
+        session = HibernateSessionManager.getSessionFactory().openSession();
+    }
 
     @Override
     public void add(User user) {
@@ -25,10 +29,13 @@ public class UserDAO implements IDAO<User>{
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws UserExistsException{
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         User user = (User) session.get(User.class, id);
+
+        if (null == user)
+            throw new UserExistsException("User does not exist with id=" + id + ".\n");
 
         session.delete(user);
         session.getTransaction().commit();
@@ -36,10 +43,13 @@ public class UserDAO implements IDAO<User>{
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user) throws UserExistsException{
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         User userUpdate = (User) session.get(User.class, user.getUserId());
+
+        if (null == userUpdate)
+            throw new UserExistsException("User does not exist with id=" + user.getUserId() + ".\n");
         userUpdate.setUsername(user.getUsername());
 
         session.saveOrUpdate(userUpdate);
@@ -48,10 +58,12 @@ public class UserDAO implements IDAO<User>{
     }
 
     @Override
-    public User show(int id) {
+    public User show(int id) throws UserExistsException{
         session = HibernateSessionManager.getSessionFactory().openSession();
         session.beginTransaction();
         User user = (User) session.get(User.class, id);
+        if (null == user)
+            throw new UserExistsException("User does not exist with id=" + id + ".\n");
 
         session.getTransaction().commit();
         session.close();

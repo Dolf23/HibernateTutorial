@@ -6,16 +6,10 @@
 <hibernate-mapping>
     <class name="com.javahash.hibernate.dto.User" table="USER">
         <id name="userId" type="int" column="USER_ID" >
-            <generator class="assigned"/>
+            <generator class="increment"/>
         </id>
-        <property name="username">
-            <column name="USERNAME" />
-        </property>
-        <property name="createdBy">
-            <column name="CREATED_BY"/>
-        </property>
-        <property name="createdDate" type="date">
-            <column name="CREATED_DATE"/>
-        </property>
+        <property name="username" column="USERNAME" />
+        <property name="createdBy" column="CREATED_BY"/>
+        <property name="createdDate" type="date" column="CREATED_DATE" />
     </class>
 </hibernate-mapping> 
